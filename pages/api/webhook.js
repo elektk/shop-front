@@ -1,9 +1,10 @@
 import {mongooseConnect} from "@/lib/mongoose";
-const stripe = require('stripe')(process.env.STRIPE_SK);
 import {buffer} from 'micro';
 import {Order} from "@/models/Order";
 
-const endpointSecret = "";
+const stripe = require('stripe')(process.env.STRIPE_SK);
+
+const endpointSecret = "whsec_634d3142fd2755bd61adaef74ce0504bd2044848c8aac301ffdb56339a0ca78d";
 
 export default async function handler(req,res) {
   await mongooseConnect();
@@ -40,6 +41,3 @@ export default async function handler(req,res) {
 export const config = {
   api: {bodyParser:false,}
 };
-
-// bright-thrift-cajole-lean
-// acct_1Lj5ADIUXXMmgk2a
