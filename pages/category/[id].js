@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import Title from "@/components/Title";
 import Center from "@/components/Center";
 import {Category} from "@/models/Category";
 import {Product} from "@/models/Product";
@@ -76,7 +75,7 @@ export default function CategoryPage({
       setProducts(res.data);
       setLoadingProducts(false);
     })
-  }, [filtersValues, sort, filtersChanged]);
+  }, [filtersValues, sort, filtersChanged, category._id, subCategories]);
   return (
     <>
       <Header />

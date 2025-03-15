@@ -1,10 +1,10 @@
 import Center from "@/components/Center";
 import Header from "@/components/Header";
-import Title from "@/components/Title";
+import Title from "@/styles/Title.styles";
 import {mongooseConnect} from "@/lib/mongoose";
 import {Product} from "@/models/Product";
 import styled from "styled-components";
-import WhiteBox from "@/components/WhiteBox";
+import WhiteBox from "@/styles/WhiteBox.styles";
 import ProductImages from "@/components/ProductImages";
 import CartIcon from "@/components/icons/CartIcon";
 import FlyingButton from "@/components/FlyingButton";
@@ -28,6 +28,11 @@ const Price = styled.span`
   font-size: 1.4rem;
 `;
 
+const Description = styled.p`
+  white-space: pre-line;
+`;
+
+
 export default function ProductPage({product}) {
   return (
     <>
@@ -39,14 +44,14 @@ export default function ProductPage({product}) {
           </WhiteBox>
           <div>
             <Title>{product.title}</Title>
-            <p>{product.description}</p>
+            <Description>{product.description}</Description>
             <PriceRow>
               <div>
-                <Price>${product.price}</Price>
+                <Price>{product.price} ₽</Price>
               </div>
               <div>
                 <FlyingButton main _id={product._id} src={product.images?.[0]}>
-                  <CartIcon />Add to cart
+                  <CartIcon />
                 </FlyingButton>
               </div>
             </PriceRow>

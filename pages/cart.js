@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import styled from "styled-components";
 import Center from "@/components/Center";
 import Button from "@/components/Button";
 import {useContext, useEffect, useState} from "react";
@@ -9,80 +8,9 @@ import Table from "@/components/Table";
 import Input from "@/components/Input";
 import {RevealWrapper} from "next-reveal";
 import {useSession} from "next-auth/react";
+import { Box, CityHolder, ColumnsWrapper, ProductImageBox, ProductInfoCell, QuantityLabel } from "@/styles/Cart.styles";
 
-const ColumnsWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  @media screen and (min-width: 768px) {
-    grid-template-columns: 1.2fr .8fr;
-  }
-  gap: 40px;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  table thead tr th:nth-child(3),
-  table tbody tr td:nth-child(3),
-  table tbody tr.subtotal td:nth-child(2){
-    text-align: right;
-  }
-  table tr.subtotal td{
-    padding: 15px 0;
-  }
-  table tbody tr.subtotal td:nth-child(2){
-    font-size: 1.4rem;
-  }
-  tr.total td{
-    font-weight: bold;
-  }
-`;
 
-const Box = styled.div`
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 30px;
-`;
-
-const ProductInfoCell = styled.td`
-  padding: 10px 0;
-  button{padding:0 !important;}
-`;
-
-const ProductImageBox = styled.div`
-  width: 70px;
-  height: 100px;
-  padding: 2px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  img{
-    max-width: 60px;
-    max-height: 60px;
-  }
-  @media screen and (min-width: 768px) {
-    padding: 10px;
-    width: 100px;
-    height: 100px;
-    img{
-      max-width: 80px;
-      max-height: 80px;
-    }
-  }
-`;
-
-const QuantityLabel = styled.span`
-  padding: 0 15px;
-  display: block;
-  @media screen and (min-width: 768px) {
-    display: inline-block;
-    padding: 0 6px;
-  }
-`;
-
-const CityHolder = styled.div`
-  display:flex;
-  gap: 5px;
-`;
 
 export default function CartPage() {
   const { cartProducts, addProduct, removeProduct, clearCart } = useContext(CartContext);
@@ -129,7 +57,7 @@ export default function CartPage() {
       .then(response => {
         const addressData = response.data;
         if (addressData) {
-          setName(addressData.name || ''); // Убедитесь, что значение по умолчанию - пустая строка
+          setName(addressData.name || ''); 
           setEmail(addressData.email || '');
           setCity(addressData.city || '');
           setPostalCode(addressData.postalCode || '');
@@ -137,9 +65,6 @@ export default function CartPage() {
           setCountry(addressData.country || '');
         }
       })
-      .catch(error => {
-        console.error('Ошибка при получении адреса:', error);
-      });
   }, [session]);
 
   function moreOfThisProduct(id) {
@@ -151,25 +76,17 @@ export default function CartPage() {
   }
 
   async function goToPayment() {
-    try {
-      const response = await axios.post('/api/checkout', {
-        name,
-        email,
-        city,
-        postalCode,
-        streetAddress,
-        country,
-        cartProducts,
-      });
-  
-      if (response.data.url) {
-        window.location = response.data.url;
-      } else {
-        console.error('URL не получен из ответа:', response.data);
-      }
-    } catch (error) {
-      console.error('Ошибка при переходе к оплате:', error);
-      // Вы можете также показать уведомление пользователю о том, что произошла ошибка
+    const response = await axios.post('/api/checkout', {
+      name,
+      email,
+      city,
+      postalCode,
+      streetAddress,
+      country,
+      cartProducts,
+    });
+    if (response.data.url) {
+      window.location = response.data.url;
     }
   }
 
@@ -186,8 +103,8 @@ export default function CartPage() {
         <Center>
           <ColumnsWrapper>
             <Box>
-              <h1>Thanks for your order!</h1>
-              <p>We will email you when your order will be sent.</p>
+              <h1>Спасибо за ваш заказ!</h1>
+              <p>Мы сообщим вам по электронной почте, когда ваш заказ будет отправлен.</p>
             </Box>
           </ColumnsWrapper>
         </Center>
@@ -201,17 +118,17 @@ export default function CartPage() {
         <ColumnsWrapper>
           <RevealWrapper delay={0}>
             <Box>
-              <h2>Cart</h2>
+              <h2>Корзина</h2>
               {!cartProducts?.length && (
-                <div>Your cart is empty</div>
+                <div>Ваша корзина пуста</div>
               )}
               {products?.length > 0 && (
                 <Table>
                   <thead>
                   <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
+                    <th>Продукт</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -225,7 +142,7 @@ export default function CartPage() {
                       </ProductInfoCell>
                       <td>
                         <Button
-                          onClick={() => lessOfThisProduct(product._id)}>-</Button>
+                          onClick={() => lessOfThisProduct(product._id)}>&minus;</Button>
                         <QuantityLabel>
                           {cartProducts.filter(id => id === product._id).length}
                         </QuantityLabel>
@@ -233,21 +150,21 @@ export default function CartPage() {
                           onClick={() => moreOfThisProduct(product._id)}>+</Button>
                       </td>
                       <td>
-                        ${cartProducts.filter(id => id === product._id).length * product.price}
+                        {cartProducts.filter(id => id === product._id).length * product.price}&nbsp;₽
                       </td>
                     </tr>
                   ))}
                   <tr className="subtotal">
-                    <td colSpan={2}>Products</td>
-                    <td>${productsTotal}</td>
+                    <td colSpan={2}>Продукт</td>
+                    <td>{productsTotal}&nbsp;₽</td>
                   </tr>
                   <tr className="subtotal">
-                    <td colSpan={2}>Shipping</td>
-                    <td>${shippingFee}</td>
+                    <td colSpan={2}>Доставка</td>
+                    <td>{shippingFee}&nbsp;₽</td>
                   </tr>
                   <tr className="subtotal total">
-                    <td colSpan={2}>Total</td>
-                    <td>${productsTotal + parseInt(shippingFee || 0)}</td>
+                    <td colSpan={2}>Итого</td>
+                    <td>{productsTotal + parseInt(shippingFee || 0)}&nbsp;₽</td>
                   </tr>
                   </tbody>
                 </Table>
@@ -257,42 +174,42 @@ export default function CartPage() {
           {!!cartProducts?.length && (
             <RevealWrapper delay={100}>
               <Box>
-                <h2>Order information</h2>
+                <h2>Информация о заказе</h2>
                 <Input type="text"
-                       placeholder="Name"
+                       placeholder="Имя"
                        value={name}
                        name="name"
                        onChange={ev => setName(ev.target.value)} />
                 <Input type="text"
-                       placeholder="Email"
+                       placeholder="Емеил"
                        value={email}
                        name="email"
                        onChange={ev => setEmail(ev.target.value)}/>
                 <CityHolder>
                   <Input type="text"
-                         placeholder="City"
+                         placeholder="Город"
                          value={city}
                          name="city"
                          onChange={ev => setCity(ev.target.value)}/>
                   <Input type="text"
-                         placeholder="Postal Code"
+                         placeholder="Индекс"
                          value={postalCode}
                          name="postalCode"
                          onChange={ev => setPostalCode(ev.target.value)}/>
                 </CityHolder>
                 <Input type="text"
-                       placeholder="Street Address"
+                       placeholder="Улица, дом"
                        value={streetAddress}
                        name="streetAddress"
                        onChange={ev => setStreetAddress(ev.target.value)}/>
                 <Input type="text"
-                       placeholder="Country"
+                       placeholder="Страна"
                        value={country}
                        name="country"
                        onChange={ev => setCountry(ev.target.value)}/>
                 <Button black block
                         onClick={goToPayment}>
-                  Continue to payment
+                  Продолжить оплату
                 </Button>
               </Box>
             </RevealWrapper>

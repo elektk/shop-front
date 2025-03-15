@@ -1,10 +1,5 @@
-import Link from "next/link";
-import styled from "styled-components";
-import {ButtonStyle} from "@/components/Button";
+import { StyledLink } from "@/styles/ButtonLink.styles";
 
-const StyledLink = styled(Link)`
-  ${ButtonStyle}
-`;
 
 export default function ButtonLink(props) {
   return (

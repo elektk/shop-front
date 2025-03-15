@@ -1,53 +1,90 @@
-import styled from "styled-components";
-import {useState} from "react";
+import { useState, useEffect } from "react";
+import {
+  BigImageWrapper,
+  BigImage,
+  ImageButtons,
+  ImageButton,
+  Image,
+  ModalOverlay,
+  ModalContent,
+  LeftArrow,
+  ModalImage,
+  RightArrow
+} from '@/styles/ProductImages.styles'
 
-const Image = styled.img`
-    max-width: 100%;
-    max-height: 100%;
-  `;
-const BigImage = styled.img`
-  max-width: 100%;
-  max-height: 200px;
-`;
-const ImageButtons = styled.div`
-    display: flex;
-    gap: 10px;
-    flex-grow: 0;
-    margin-top: 10px;
-  `;
-const ImageButton = styled.div`
-    border: 2px solid #ccc;
-    ${props => props.active ? `
-      border-color: #ccc;
-    ` : `
-      border-color: transparent;
-    `}
-    height: 40px;
-    padding: 2px;
-    cursor: pointer;
-    border-radius: 5px;
-  `;
-const BigImageWrapper = styled.div`
-  text-align: center;
-`;
 
-export default function ProductImages({images}) {
-  const [activeImage,setActiveImage] = useState(images?.[0]);
+export default function ProductImages({ images }) {
+  const [activeImage, setActiveImage] = useState(images?.[0] || "");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => setIsModalOpen((prev) => !prev);
+
+
+  const nextImage = () => {
+    const currentIndex = images.indexOf(activeImage);
+    const nextIndex = (currentIndex + 1) % images.length;
+    setActiveImage(images[nextIndex]);
+  };
+
+
+  const prevImage = () => {
+    const currentIndex = images.indexOf(activeImage);
+    const prevIndex = (currentIndex - 1 + images.length) % images.length;
+    setActiveImage(images[prevIndex]);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (!isModalOpen) return;
+      if (event.key === "Escape") {
+        setIsModalOpen(false);
+      } else if (event.key === "ArrowRight") {
+        nextImage();
+      } else if (event.key === "ArrowLeft") {
+        prevImage();
+      }
+    };
+
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "auto";
+    };
+  }, [isModalOpen, activeImage, images]);
+
   return (
     <>
       <BigImageWrapper>
-        <BigImage src={activeImage} />
+        <BigImage src={activeImage} onClick={toggleModal} />
       </BigImageWrapper>
       <ImageButtons>
-        {images.map(image => (
+        {images.map((image) => (
           <ImageButton
             key={image}
-            active={image===activeImage}
-            onClick={() => setActiveImage(image)}>
-            <Image src={image} alt=""/>
+            active={image === activeImage}
+            onClick={() => setActiveImage(image)}
+          >
+            <Image src={image} alt="" />
           </ImageButton>
         ))}
       </ImageButtons>
+
+
+      {isModalOpen && (
+        <ModalOverlay onClick={toggleModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <LeftArrow onClick={prevImage}>←</LeftArrow>
+            <ModalImage src={activeImage} alt="Full-size preview" />
+            <RightArrow onClick={nextImage}>→</RightArrow>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </>
   );
 }

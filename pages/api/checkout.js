@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     cartProducts,
   } = req.body;
 
-  // Проверка на наличие всех необходимых полей
+
   if (!name || !email || !city || !postalCode || !streetAddress || !country || !cartProducts) {
     res.status(400).json({ error: 'Все поля обязательны.' });
     return;
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
   const uniqueIds = [...new Set(productsIds)];
   const productsInfos = await Product.find({ _id: uniqueIds });
 
-  // Проверка на наличие продуктов
+
   if (!productsInfos.length) {
     res.status(404).json({ error: 'Продукты не найдены.' });
     return;
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
 
   const session = await getServerSession(req, res, authOptions);
 
-  // Проверка на наличие сессии
+
   if (!session || !session.user) {
     res.status(401).json({ error: 'Пользователь не авторизован.' });
     return;
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
 
   const shippingFeeSetting = await Setting.findOne({ name: 'shippingFee' });
 
-  // Проверка на наличие настройки доставки
+
   if (!shippingFeeSetting) {
     res.status(404).json({ error: 'Настройка доставки не найдена.' });
     return;
