@@ -9,5 +9,3 @@ yarn dev
 # or
 pnpm dev
 ```
-
-// ANALYZE=true npm run build
