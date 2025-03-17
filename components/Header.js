@@ -23,7 +23,7 @@ export default function Header() {
       <Center>
         <Wrapper>
           <Logo href={'/'}>
-          Авада-кедавра
+          AZAN
           </Logo>
           <StyledNav mobileNavActive={mobileNavActive}>
             <NavLink href={'/'}>Домой</NavLink>
