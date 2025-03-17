@@ -3,34 +3,12 @@ import Header from "@/components/Header";
 import Title from "@/styles/Title.styles";
 import {mongooseConnect} from "@/lib/mongoose";
 import {Product} from "@/models/Product";
-import styled from "styled-components";
 import WhiteBox from "@/styles/WhiteBox.styles";
 import ProductImages from "@/components/ProductImages";
 import CartIcon from "@/components/icons/CartIcon";
 import FlyingButton from "@/components/FlyingButton";
 import ProductReviews from "@/components/ProductReviews";
-
-const ColWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  @media screen and (min-width: 768px) {
-    grid-template-columns: .8fr 1.2fr;
-  }
-  gap: 40px;
-  margin: 40px 0;
-`;
-const PriceRow = styled.div`
-  display: flex;
-  gap: 20px;
-  align-items: center;
-`;
-const Price = styled.span`
-  font-size: 1.4rem;
-`;
-
-const Description = styled.p`
-  white-space: pre-line;
-`;
+import { ColWrapper, Description, Price, PriceRow } from "@/styles/Product[id].styles";
 
 
 export default function ProductPage({product}) {

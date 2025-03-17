@@ -74,3 +74,10 @@ export const CityHolder = styled.div`
   display:flex;
   gap: 5px;
 `;
+
+export const ErrorMessage = styled.div`
+  color: #ff0000;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  font-weight: 500;
+`;

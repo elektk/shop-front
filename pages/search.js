@@ -11,7 +11,15 @@ export default function SearchPage() {
   const [phrase, setPhrase] = useState('');
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const debouncedSearch = useCallback(debounce(searchProducts, 500), []);
+  const debouncedSearch = useCallback(
+    debounce((phrase) => {
+      axios.get('/api/products?phrase=' + encodeURIComponent(phrase)).then(response => {
+        setProducts(response.data);
+        setIsLoading(false);
+      });
+    }, 500),
+    []
+  );
   
   
 
@@ -23,13 +31,6 @@ export default function SearchPage() {
       setProducts([]);
     }
   }, [phrase, debouncedSearch]);
-
-  function searchProducts(phrase) {
-    axios.get('/api/products?phrase=' + encodeURIComponent(phrase)).then(response => {
-      setProducts(response.data);
-      setIsLoading(false);
-    });
-  }
 
   return (
     <>

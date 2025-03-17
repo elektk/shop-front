@@ -27,7 +27,7 @@ export function WishlistContextProvider({ children }) {
 
   useEffect(() => {
     saveWishlist();
-  }, [wishlistProducts]);
+  }, [wishlistProducts, saveWishlist]);
 
   function addProduct(productId) {
     setWishlistProducts(prev => (!prev.includes(productId) ? [...prev, productId] : prev));

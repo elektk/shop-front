@@ -9,7 +9,6 @@ import {
   NavButton, 
   SideIcons 
 } from '@/styles/Header.styles';
-
 import BarsIcon from "@/components/icons/Bars";
 import SearchIcon from "@/components/icons/SearchIcon";
 import Center from "@/components/Center";
@@ -23,7 +22,9 @@ export default function Header() {
     <StyledHeader>
       <Center>
         <Wrapper>
-          <Logo href={'/'}>Авада-кедавра</Logo>
+          <Logo href={'/'}>
+          Авада-кедавра
+          </Logo>
           <StyledNav mobileNavActive={mobileNavActive}>
             <NavLink href={'/'}>Домой</NavLink>
             <NavLink href={'/products'}>Все продукты</NavLink>
